@@ -15,6 +15,12 @@ int main()
     int len = 1;
 
     ps = (char *)calloc(1, sizeof(char));
+    // pt = (char *)calloc(1, 1); => while 함수 밖에서 동적 할당을 했을 경우 free함수를 해줘야 함
+    if (ps == NULL)
+    {
+        printf("Out of Memory...\n");
+        exit(1);
+    }
 
     while(1)
     {
@@ -45,6 +51,7 @@ int main()
     }
     printf("%s\n", ps);
     free(ps);
+    // free(pt); => while 함수 안에서 pt를 동적할당 했다면 할 필요 없음
 
     return 0;
 }

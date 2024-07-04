@@ -1,5 +1,13 @@
 #include <stdio.h>
 // 도전 실전 예제 3번
+struct score
+{
+    int kor;
+    int eng;
+    int mat;
+    double avg;
+};
+
 struct student
 {
     int number;
@@ -7,27 +15,25 @@ struct student
     struct score Score;
 };
 
-struct score
-{
-    int kor;
-    int eng;
-    int mat;
-    double avg;
-    char grade;
-};
 
 void input_data(struct student *ps);
-void print_data(struct student *ps);
+void print_data(struct student *ps, char *pa);
 void sort_data(struct student *ps);
+void set_grade(struct student *ps, char *pa);
 
 int main()
 {
     struct student list[5];
+    char grade[5];
 
     input_data(list);
-    print_data(list);
+    set_grade(list, grade);
+    printf("Before sort...\n");
+    print_data(list, grade);
     sort_data(list);
-    print_data(list);
+    set_grade(list, grade);
+    printf("After sort...\n");
+    print_data(list, grade);
 
     return 0;
 }
@@ -46,31 +52,17 @@ void input_data(struct student *ps)
         scanf("%s", (ps + i) -> name);
         printf("Score of Kor, Eng, Mat : ");
         scanf("%d%d%d", &ps[i].Score.kor, &ps[i].Score.eng, &ps[i].Score.mat);
+        sum = ps[i].Score.kor + ps[i].Score.eng + ps[i].Score.mat;
+        ps[i].Score.avg = sum / 3.0;
     }
 
     for(i = 0; i < 5; i++)
     {
-        sum = ps[i].Score.kor + ps[i].Score.eng + ps[i].Score.mat;
-        ps[i].Score.avg = sum / 3.0;
-        temp = ps[i].Score.avg;
 
-        if (temp >= 90.0)
-        {
-            ps[i].Score.grade = 'A';
-        }
-        else if (temp >= 80.0)
-        {
-            ps[i].Score.grade = 'B';
-        }
-        else if (temp >= 70.0)
-        {
-            ps[i].Score.grade = 'C';
-        }
-        else ps[i].Score.grade = 'F';
     }
 }
 
-void print_data(struct student *ps)
+void print_data(struct student *ps, char *pa)
 {
     int i;
 
@@ -78,11 +70,41 @@ void print_data(struct student *ps)
     {
         printf("%d %s%5d%5d%5d   %.1lf    %c\n",
         ps[i].number, ps[i].name, ps[i].Score.kor, ps[i].Score.eng, ps[i].Score.mat,
-        ps[i].Score.avg, ps[i].Score.grade);
+        ps[i].Score.avg, pa[i]);
     }
 }
 
 void sort_data(struct student *ps)
 {
+    int i, j;
+    struct student temp;
+
+    for(i = 0; i < 5; i++)
+    {
+        for(j = 0; j < i; j++)
+        {
+            if (ps[i].Score.avg > ps[j].Score.avg)
+            {
+                temp = ps[i];
+                ps[i] = ps[j];
+                ps[j] = temp;
+            }
+        }
+    }
+}
+
+void set_grade(struct student *ps, char *pa)
+{
+    int i;
+    double temp;
     
+    for(i = 0; i < 5; i++)
+    {
+        temp = ps[i].Score.avg;
+
+        if (temp >= 90.0) pa[i] = 'A';
+        else if (temp >= 80.0) pa[i] = 'B';
+        else if (temp >= 70.0) pa[i] = 'C';
+        else pa[i] = 'F';
+    }
 }

@@ -9,17 +9,17 @@ int main()
     char str[80];
     char *res;
 
-    ifp = fopen("a.txt", "r");
+    ifp = fopen("C:\\C (git)\\chapter18\\pra1808-01.txt", "r");
     if(ifp == NULL)
     {
-        printf("Can't open file.\n");
+        printf("Can't open file(ifp).\n");
         return 1;
     }
 
-    ofp = fopen("b.txt", "w");
+    ofp = fopen("C:\\C (git)\\chapter18\\pra1808-02.txt", "w");
     if(ofp == NULL)
     {
-        printf("Can't open file.\n");
+        printf("Can't open file(ofp).\n");
         return 1;
     }
 
@@ -30,7 +30,7 @@ int main()
         {
             break;
         }
-        str[strles(str) - 1] = '\0';
+        str[strlen(str) - 1] = '\0';
         fputs(str, ofp);
         fputs(" ", ofp);
     }

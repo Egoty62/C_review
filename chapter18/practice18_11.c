@@ -8,16 +8,16 @@ int main()
     int num = 10;
     int res;
 
-    afp = fopen("a.txt", "wt");
-    fprintf(afp, "%d", num);
+    afp = fopen("C:\\C (git)\\chapter18\\pra1811-01.txt", "wt");
+    fprintf(afp, "%d", num);            // num의 값을 문자로 변환하여 출력
 
-    bfp = fopen("b.txt", "wb");
+    bfp = fopen("C:\\C (git)\\chapter18\\pra1811-02.txt", "wb");
     fwrite(&num, sizeof(num), 1, bfp);  // num의 값을 그대로 파일에 출력
 
     fclose(afp);
     fclose(bfp);
 
-    bfp = fopen("b.txt", "rb");
+    bfp = fopen("C:\\C (git)\\chapter18\\pra1811-02.txt", "rb");
     fread(&res, sizeof(res), 1, bfp);
     printf("%d", res);
 

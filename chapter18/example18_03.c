@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 // 도전 실전 예제 3번
 // 출판사 매출 관리 프로그램
 /*  책 제목, 매출단가(만원 단위), 판매 부수(양수 출고, 음수 반품)를 저장한 파일
@@ -15,28 +16,35 @@ int main()
     int i, j, cnt;
     int temp;
 
-    ifp = fopen("C:\\C (git)\\Chapter18\\ex1803-01.txt", "r");
-    if(ifp == NULL) return 1;
-
-    fgets(bookname, sizeof(bookname), ifp);
-    bookname[strlen(bookname) - 1] = '\0';
-    fscanf(ifp, "%lf %d", cost, cnt);
-    fgetc(ifp);         // 개행문자 제거
-    // 반복문 시작
-    for(i = 0; i < 11; i++)
+    ifp = fopen("C:\\C (git)\\chapter18\\ex1803-01.txt", "r");
+    if(ifp == NULL)
     {
-        if(str[i] == NULL)
-        {
-            str[i] = (char *)malloc(strlen(bookname));
-            strcpy(str[i], bookname);
-            sum[i] = (int)(cost * cnt * 10000);
-            break;
-        }
+        printf("Can't open file (read).\n");
+        return 1;
+    }
 
-        if(strcmp(str[i], bookname) == 0)
+    while(1)
+    {
+        if(fgets(bookname, sizeof(bookname), ifp) == NULL) break;
+        bookname[strlen(bookname) - 1] = '\0';
+        fscanf(ifp, "%lf %d", &cost, &cnt);
+        fgetc(ifp);         // 개행문자 제거
+        // 반복문 시작
+        for(i = 0; i < 11; i++)
         {
-            sum[i] += (int)(cost * cnt * 10000);
-            break;
+            if(str[i] == NULL)
+            {
+                str[i] = (char *)malloc(strlen(bookname));
+                strcpy(str[i], bookname);
+                sum[i] = (int)(cost * cnt * 10000);
+                break;
+            }
+
+            if(strcmp(str[i], bookname) == 0)
+            {
+                sum[i] += (int)(cost * cnt * 10000);
+                break;
+            }
         }
     }
 
@@ -58,9 +66,15 @@ int main()
             }
         }
     }
+
+    fclose(ifp);
     
-    ofp = fopen("C:\\C (git)\\Chapter18\\ex1803-02.txt", "w");
-    if(ofp == NULL) return 1;
+    ofp = fopen("C:\\C (git)\\chapter18\\ex1803-02.txt", "w");
+    if(ofp == NULL)
+    {
+        printf("Can't open file (write).\n");
+        return 1;
+    }
 
     for(i = 0; i < 11; i++)
     {
@@ -73,7 +87,6 @@ int main()
         free(str[i]);
     }
     // 반복문 종료
-    fclose(ifp);
     fclose(ofp);
 
     return 0;
